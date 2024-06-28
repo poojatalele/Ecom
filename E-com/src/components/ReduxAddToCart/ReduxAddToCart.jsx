@@ -1,41 +1,48 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart, removeFromCart } from "../../store.js";
 function ReduxAddToCart({ product }) {
-  console.log("add to cart", product.id);
+    console.log("add to cart", product.id);
+    // useSelector
+    let dispatch = useDispatch();
+    function increase() {
+        //dispatch({type: , payload: })
+        dispatch(addToCart(product));
+    }
+    function decrease() {
+     //dispatch({type: , payload: })
+     dispatch(removeFromCart(product));
+    }
 
-  // Use useDispatch to get the dispatch function
-  const dispatch = useDispatch();
+    let quantity = useSelector((state) => {
+        return state.cart.items[product.id]?.quantity || 0;
+    })
 
-  // Define the increase function to dispatch the ADD_TO_CART action
-  function increase() {
-    dispatch({ type: "ADD_TO_CART", payload: product });
-  }
-
-  // Define the decrease function to dispatch the REMOVE_FROM_CART action
-  function decrease() {
-    dispatch({ type: "REMOVE_FROM_CART", payload: product });
-  }
-
-  // Use useSelector to get the quantity of the product from the Redux state
-  const quantity = useSelector((state) => state.cart.items[product.id]?.quantity || 0);
-
-  // Conditional rendering based on the quantity
-  if (quantity === 0) {
-    return (
-      <div>
-        <button onClick={increase}>Add to Cart</button>
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <button onClick={decrease}>-</button>
-        <span>{quantity}</span>
-        <button onClick={increase}>+</button>
-      </div>
-    );
-  }
+    if (quantity === 0) {
+        return (
+            <div>
+                <button onClick={increase}>AddToCart</button>
+            </div>
+     )  
+    } else {
+        return ( 
+            <div>
+                <button onClick={decrease}>-</button>
+                <span>{quantity}</span>
+                <button onClick={increase}>+</button>
+            </div>
+        )
+    }
 }
-
 export default ReduxAddToCart;
+
+
+// array of object 
+// object of object 
+
+//[{id: 1, quantity: 10}, {id: 2, quantity: 10}, {id: 3, quantity: 10}, {id: 4, quantity: 10}]
+// cart = 
+// {id:{id: 1, quantity: 10}, id:{id: 2, quantity: 10}, id:{id: 3, quantity: 10}, id:{id: 4, quantity: 10}}
+//cart["3"]
+
+// Object.value(obj);
+// Object.keys(obj);
